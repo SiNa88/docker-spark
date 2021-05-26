@@ -4,8 +4,8 @@ Docker images to:
 * Build Spark applications in Java, Scala or Python to run on a Spark cluster
 
 Currently version:
-* Spark 2.4.3 for Hadoop 2.7.0 with OpenJDK 8
-* Spark Driver should be installed with python 3.7 as the spark executor uses python 3.7
+* Spark 3.1.1 for Hadoop 2.7.0 with OpenJDK 8
+* Spark Driver should be installed with python 3.9 as the spark executor uses python 3.9
 
 ## Using Docker Compose
 ```sh
