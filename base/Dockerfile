@@ -14,7 +14,7 @@ COPY finish-step.sh /
 USER root
 
 # Spark dependencies
-ENV APACHE_SPARK_VERSION 2.4.3
+ENV APACHE_SPARK_VERSION 3.1.1
 ENV HADOOP_VERSION 2.7
 
 RUN apt-get -y update && \
@@ -32,11 +32,12 @@ RUN add-apt-repository ppa:deadsnakes/ppa -y
 RUN apt-get update \
  && apt-get install -y python3-pip python3.7-dev python3.7 \
  && ln -s /usr/bin/python3.7 /usr/bin/python \
- && easy_install3 pip py4j \
+ && pip3 install py4j \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
 
+#&& easy_install3 pip py4j \
 
 
 ENV PYTHONHASHSEED 0
@@ -45,7 +46,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK 1
 
 RUN cd /tmp && \
     wget -q http://mirrors.ukfast.co.uk/sites/ftp.apache.org/spark/spark-${APACHE_SPARK_VERSION}/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz && \
-    echo "E8B7F9E1DEC868282CADCAD81599038A22F48FB597D44AF1B13FCC76B7DACD2A1CAF431F95E394E1227066087E3CE6C2137C4ABAF60C60076B78F959074FF2AD *spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz" | sha512sum -c - && \
+    echo "5C773553B785B16237DFBE7A39F34BEA6BF1D4E10E520BD27D55B2767E2883DE5A06ACF33447E571570A2D3CC34B5094F15D17BEF81A2AB16080A64F3AB34A0B *spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz" | sha512sum -c - && \
     tar xzf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -C /usr/local --owner root --group root --no-same-owner && \
     rm spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
 RUN cd /usr/local && ln -s spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark
@@ -59,4 +60,3 @@ ENV SPARK_OPTS --driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M -
 
 #Give permission to execute scripts
 RUN chmod +x /wait-for-step.sh && chmod +x /execute-step.sh && chmod +x /finish-step.sh
-
