@@ -12,35 +12,3 @@ Currently version:
 $ sudo bash build.sh
 $ sudo docker-compose up &
 ```
-
-## Launch a Spark Notebook
-```
-$ sudo docker run -it --rm --net host jupyter/pyspark-notebook
-```
-Then test in jupyter notebook :
-```py
-
-import pyspark
-from pyspark import SparkContext
-from pyspark.sql import SQLContext, Row
-
-conf = pyspark.SparkConf()
-conf.set("spark.driver.memory", "11g")
-conf.setMaster("spark://<MASTER_IP>:7077")
-
-from pyspark.sql import SparkSession
-
-spark = SparkSession \
-    .builder \
-    .appName("task usage") \
-    .config(conf=conf) \
-    .getOrCreate()
-    
-sc = spark.sparkContext
-#creates sql context
-sqlContext = SQLContext(sc)
-
-x = ['spark', 'rdd', 'example', 'sample', 'example'] 
-y = sc.parallelize(x)
-y.collect()
-```
